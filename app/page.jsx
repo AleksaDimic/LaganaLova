@@ -64,7 +64,7 @@ export default function Home() {
   };
 
   return (
-    <div>
+    <div className=" select-none">
       <div id="Home" className="sticky top-0 z-50 bg-neutral-900 shadow-md">
         <div className="p-2 flex flex-row items-center justify-between">
           <motion.div
@@ -124,60 +124,80 @@ export default function Home() {
           <div className="md:hidden flex items-center">
             <FontAwesomeIcon
               icon={isOpen ? faXmark : faBars}
-              className="text-white text-2xl cursor-pointer"
+              className="text-white md:text-4xl text-xl cursor-pointer absolute right-2 z-50"
               onClick={() => setIsOpen(!isOpen)}
             />
           </div>
+
+          <AnimatePresence>
+            {isOpen && (
+              <motion.div
+                className="fixed inset-0 z-40 flex"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                <div
+                  className="flex-1 bg-black bg-opacity-50"
+                  onClick={() => setIsOpen(false)}
+                />
+                <motion.div
+                  initial={{ x: "100%" }}
+                  animate={{ x: 0 }}
+                  exit={{ x: "100%" }}
+                  transition={{ duration: 0.4 }}
+                  className="w-2/3 h-full bg-neutral-900 shadow-lg flex flex-col items-start p-6"
+                >
+                  {["informacije", "karijera", "recenzije", "uclani"].map(
+                    (item, i) => (
+                      <motion.div
+                        key={item}
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.3, delay: i * 0.1 }}
+                        className="text-lg font-bold mb-6 text-red-400 cursor-pointer hover:text-red-300"
+                        onClick={() => {
+                          scrollToSection(item);
+                          setIsOpen(false);
+                        }}
+                      >
+                        {item === "uclani"
+                          ? "Pridružite se!"
+                          : item.charAt(0).toUpperCase() + item.slice(1)}
+                      </motion.div>
+                    )
+                  )}
+                  <div className="flex mt-auto gap-6">
+                    <a
+                      href="https://www.instagram.com/lagana.lova"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <FontAwesomeIcon
+                        className="text-white text-2xl"
+                        icon={faInstagram}
+                      />
+                    </a>
+                    <a
+                      href="https://www.tiktok.com/@lagana.lova"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <FontAwesomeIcon
+                        className="text-white text-2xl"
+                        icon={faTiktok}
+                      />
+                    </a>
+                  </div>
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
-        <AnimatePresence>
-          {isOpen && (
-            <motion.div
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ duration: 0.4 }}
-              className="fixed top-0 right-0 h-full w-2/3 bg-neutral-900 shadow-lg flex flex-col items-start p-6 z-50"
-            >
-              {["informacije", "karijera", "recenzije", "uclani"].map(
-                (item, i) => (
-                  <motion.div
-                    key={item}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.3, delay: i * 0.1 }}
-                    className="text-lg font-bold mb-6 text-red-400 cursor-pointer hover:text-red-300"
-                    onClick={() => {
-                      scrollToSection(item);
-                      setIsOpen(false);
-                    }}
-                  >
-                    {item === "uclani"
-                      ? "Pridružite se!"
-                      : item.charAt(0).toUpperCase() + item.slice(1)}
-                  </motion.div>
-                )
-              )}
-              <div className="flex mt-auto gap-6">
-                <a href="https://www.instagram.com/lagana.lova" target="_blank">
-                  <FontAwesomeIcon
-                    className="text-white text-2xl"
-                    icon={faInstagram}
-                  />
-                </a>
-                <a href="https://www.tiktok.com/@lagana.lova" target="_blank">
-                  <FontAwesomeIcon
-                    className="text-white text-2xl"
-                    icon={faTiktok}
-                  />
-                </a>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
       <div className="flex justify-center items-center p-6">
         <div className="flex flex-col items-center text-center space-y-6">
-          <h1 className="text-5xl md:text-6xl font-extrabold text-yellow-600 drop-shadow-lg flex flex-wrap justify-center animate-pulse">
+          <h1 className="text-5xl md:text-6xl font-extrabold text-white drop-shadow-lg flex flex-wrap justify-center animate-pulse font-[Quicksand]">
             {"Lagana Lova".split("").map((char, i) => (
               <motion.span
                 key={i}
@@ -205,7 +225,7 @@ export default function Home() {
             initial={{ scale: 0.2, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.6 }}
-            className="bg-gradient-to-r from-yellow-400 to-yellow-500 text-white px-8 py-3 rounded-full font-semibold shadow-lg hover:from-yellow-500 hover:to-yellow-600 hover:scale-115 transition-all duration-300"
+            className="bg-gradient-to-r from-red-400 to-red-500 text-gray-400 px-8 py-3 rounded-full font-semibold shadow-lg hover:from-red-500 hover:to-red-600 hover:scale-115 transition-all duration-300"
             onClick={() => scrollToSection("informacije")}
           >
             Saznaj Više!
@@ -214,7 +234,7 @@ export default function Home() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.6 }}
-            className="text-yellow-700 dark:text-yellow-400 max-w-xl text-center text-lg md:text-xl leading-relaxed mt-4 animate-fadeIn"
+            className="text-gray-400 dark:text-gray-400 max-w-xl text-center text-lg md:text-xl leading-relaxed mt-4 animate-fadeIn"
           >
             Otkrij kako da upravljaš svojim novcem na pametan, jednostavan i
             lagan način 💡
@@ -230,7 +250,7 @@ export default function Home() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.7 }}
-            className="text-2xl sm:text-4xl font-serif font-bold text-yellow-400"
+            className="text-2xl sm:text-4xl font-serif font-bold text-red-400"
           >
             Informacije o našem programu
           </motion.h2>
@@ -242,7 +262,7 @@ export default function Home() {
           >
             ✨ Dobrodošao na zvaničnu stranicu{" "}
             <motion.span
-              className="text-yellow-400 underline font-bold inline-block"
+              className="text-gray-300 underline font-bold inline-block"
               animate={{ scale: [1, 1.2, 1, 1.1, 1] }}
               transition={{
                 duration: 1.5,
@@ -287,9 +307,9 @@ export default function Home() {
           ].map((item, i) => (
             <motion.div
               key={i}
-              className="hover:scale-105 transition-all duration-200 cursor-pointer border rounded-lg text-yellow-500 shadow-lg bg-neutral-800 hover:bg-yellow-500 hover:text-neutral-800 p-6 w-full max-w-xs sm:max-w-sm h-44 flex flex-col justify-center items-center"
+              className="hover:scale-105 transition-all duration-200 cursor-pointer border rounded-lg text-red-500 shadow-lg bg-neutral-800 hover:bg-red-500 hover:text-white p-6 w-full max-w-xs sm:max-w-sm h-44 flex flex-col justify-center items-center"
             >
-              <motion.div className="text-xl font-bold mb-2">
+              <motion.div className="text-xl font-bold mb-2 text-gray-300">
                 {item.title}
               </motion.div>
               <div className="text-sm sm:text-base font-semibold text-center">
@@ -301,7 +321,7 @@ export default function Home() {
         <div className="mt-20">
           <h3 className="text-xl sm:text-2xl font-bold text-center mb-8">
             🚀 Mini kurs: Kreni sa{" "}
-            <span className="text-yellow-500">Reselling Biznisom</span>
+            <span className="text-red-500">Reselling Biznisom</span>
           </h3>
           <div className="text-sm sm:text-lg max-w-3xl mx-auto space-y-4 border rounded-lg p-6 sm:p-10 border-gray-500 bg-neutral-800">
             {[
@@ -351,7 +371,7 @@ export default function Home() {
               },
             ].map((item, i) => (
               <div key={i}>
-                🔹 <span className="text-blue-400 font-bold">{item.title}</span>{" "}
+                ⭕ <span className="text-red-400 font-bold">{item.title}</span>{" "}
                 – {item.text}
               </div>
             ))}
@@ -360,7 +380,7 @@ export default function Home() {
         <div className="flex justify-center mt-16">
           <button
             onClick={() => scrollToSection("uclani")}
-            className="hover:scale-110 transition-all duration-200 bg-yellow-400 text-neutral-900 font-bold text-lg sm:text-xl px-8 py-3 rounded-lg shadow-md hover:bg-neutral-700 hover:text-yellow-400"
+            className="hover:scale-110 transition-all duration-200 bg-red-400 text-neutral-900 font-bold text-lg sm:text-xl px-8 py-3 rounded-lg shadow-md hover:bg-neutral-700 hover:text-red-400"
           >
             Pridruži se već danas!
           </button>
@@ -381,13 +401,13 @@ export default function Home() {
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              className="bg-neutral-900 text-white w-full max-w-2xl mt-12 p-6 rounded-2xl shadow-xl border border-neutral-700"
+              className="bg-neutral-900 text-white w-full max-w-2xl mt-12 p-6 rounded-2xl shadow-xl border border-neutral-700 mb-32"
             >
               <motion.h2
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.3, duration: 0.6 }}
-                className="text-2xl font-bold mb-4 text-yellow-400"
+                className="text-2xl font-bold mb-4 text-red-400"
               >
                 Kako je sve počelo 🚀
               </motion.h2>
@@ -447,9 +467,9 @@ export default function Home() {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 1.4, duration: 0.7 }}
-                className="mt-6 p-4 bg-neutral-800 rounded-xl border border-yellow-500 shadow-lg text-center"
+                className="mt-6 p-4 bg-neutral-800 rounded-xl border border-red-500 shadow-lg text-center"
               >
-                <p className="text-yellow-400 font-semibold text-lg">
+                <p className="text-red-400 font-semibold text-lg">
                   📌 Bitna stvar – moguće je krenuti i bez početnog kapitala.
                 </p>
                 <p className="text-neutral-200 mt-2">
@@ -471,7 +491,7 @@ export default function Home() {
             Recenzije
           </h2>
           <div className="text-center">
-            <h3 className="text-2xl sm:text-3xl font-bold text-yellow-400 mb-10">
+            <h3 className="text-2xl sm:text-3xl font-bold text-red-400 mb-10">
               Zarade Članova 💸
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 place-items-center">
@@ -482,7 +502,7 @@ export default function Home() {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.2, duration: 0.6 }}
                   whileHover={{ scale: 1.05 }}
-                  className="bg-yellow-300 text-black rounded-2xl shadow-xl border border-gray-300 w-72 h-96 flex flex-col justify-between overflow-hidden"
+                  className="bg-red-400 text-black rounded-2xl shadow-xl border border-gray-300 w-72 h-96 flex flex-col justify-between overflow-hidden"
                 >
                   <div className="p-4 flex flex-col items-center text-center h-full">
                     <div className="rounded-xl overflow-hidden w-full h-48 sm:h-48 md:h-48">
@@ -516,28 +536,27 @@ export default function Home() {
           <div className="flex flex-col md:flex-row justify-center gap-8 py-12 w-full max-w-6xl">
             <motion.div
               whileHover={{ scale: 1.05 }}
-              className="bg-neutral-800 border-2 border-yellow-400 rounded-2xl shadow-xl p-8 max-w-sm w-full flex flex-col justify-between mx-auto text-white"
+              className="bg-neutral-800 border-2 border-red-400 rounded-2xl shadow-xl p-8 max-w-sm w-full flex flex-col justify-between mx-auto text-white"
               initial={{ opacity: 0, scale: 0.5 }}
               whileInView={{ opacity: 1, scale: 1 }}
             >
-              <h3 className="text-xl sm:text-2xl font-bold text-yellow-400 mb-4">
+              <h3 className="text-xl sm:text-2xl font-bold text-red-400 mb-4">
                 Free Grupa
               </h3>
               <ul className="space-y-3 text-neutral-300 text-sm sm:text-base">
-                <li className="flex items-center gap-2">
-                  <Clock className="text-yellow-400" /> Sporiji odgovori
+                <li className="flex items-center gap-2 font-semibold">
+                  <Clock className="text-red-400" /> Sporiji odgovori
                 </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle className="text-yellow-400" /> Osnovne
-                  informacije
+                <li className="flex items-center gap-2 font-semibold">
+                  <CheckCircle className="text-red-400" /> Osnovne informacije
                 </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle className="text-yellow-400" /> Pristup zajednici
+                <li className="flex items-center gap-2 font-semibold">
+                  <CheckCircle className="text-red-400" /> Pristup zajednici
                 </li>
               </ul>
               <div className="mt-6">
                 <a href="https://discord.gg/vCF7HxNSnW">
-                  <button className="w-full py-3 rounded-xl border-2 border-yellow-400 text-yellow-400 font-bold hover:bg-yellow-400 hover:text-black transition">
+                  <button className="w-full py-3 rounded-xl border-2 border-red-400 text-red-400 font-bold hover:bg-red-400 hover:text-black transition">
                     Uđi besplatno
                   </button>
                 </a>
@@ -545,39 +564,41 @@ export default function Home() {
             </motion.div>
             <motion.div
               whileHover={{ scale: 1.05 }}
-              className="bg-yellow-400 border-2 border-yellow-500 rounded-2xl shadow-xl p-8 max-w-sm w-full flex flex-col justify-between mx-auto text-black"
+              className="bg-red-400 border-2 border-red-500 rounded-2xl shadow-xl p-8 max-w-sm w-full flex flex-col justify-between mx-auto text-black"
               initial={{ opacity: 0, scale: 0.5 }}
               whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2 }}
             >
               <h3 className="text-xl sm:text-2xl font-bold mb-4">
                 Premium Grupa 🚀
               </h3>
               <ul className="space-y-3 text-sm sm:text-base">
-                <li className="flex items-center gap-2">
-                  <CheckCircle className="text-black" /> Brzi odgovori 24/7
+                <li className="flex items-center gap-2 text-white font-semibold">
+                  <CheckCircle className="text-white" /> Brzi odgovori 24/7
                 </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle className="text-black" /> Direktni kontakti
+                <li className="flex items-center gap-2 text-white font-semibold">
+                  <CheckCircle className="text-white" /> Direktni kontakti
                   dobavljača
                 </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle className="text-black" /> Detaljne strategije
+                <li className="flex items-center gap-2 text-white font-semibold">
+                  <CheckCircle className="text-white" /> Detaljne strategije
                   prodaje
                 </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle className="text-black" /> Mentoring i podrška
+                <li className="flex items-center gap-2 text-white font-semibold">
+                  <CheckCircle className="text-white" /> Mentoring i podrška
                 </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle className="text-black" /> Ekskluzivni proizvodi
+                <li className="flex items-center gap-2 text-white font-semibold">
+                  <CheckCircle className="text-white" /> Ekskluzivni proizvodi
                   pre svih
+                </li>
+                <li className="flex items-center gap-2 text-white font-semibold">
+                  <CheckCircle className="text-white" /> Dm za Uplatu pre svih
                 </li>
               </ul>
               <div className="mt-6 flex flex-col items-center gap-4">
                 <a
-                  href="https://www.paypal.com/ncp/payment/F7X8UPA79M52A"
+                  href="https://www.instagram.com/lagana.lova?igsh=MXduMjdqZmNxb3U3aw%3D%3D&utm_source=qr"
                   target="_blank"
-                  className="block w-full text-center border-2 border-neutral-900 px-6 py-3 rounded-xl text-white font-bold hover:bg-neutral-900 hover:text-white transition cursor-pointer"
+                  className="cursor-default block w-full text-center border-2 border-neutral-900 px-6 py-3 rounded-xl text-white font-bold hover:bg-neutral-900 hover:text-white transition"
                 >
                   <span>Pridruži se sada</span>
                 </a>
@@ -590,9 +611,7 @@ export default function Home() {
       <div className="bg-neutral-900 text-gray-300 mt-20 border-t border-gray-700">
         <div className="max-w-6xl mx-auto px-6 py-12 flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
           <div className="flex flex-col space-y-4">
-            <h2 className="text-2xl font-bold text-yellow-400">
-              Lagana Lova 💸
-            </h2>
+            <h2 className="text-2xl font-bold text-red-400">Lagana Lova 💸</h2>
             <p className="max-w-sm text-gray-400">
               Pridruži se zajednici, uči od iskusnih resellera i poveži se sa
               ljudima koji žele da unaprede svoj biznis.
@@ -600,31 +619,28 @@ export default function Home() {
           </div>
           <div className="flex flex-col md:flex-row gap-12">
             <div className="flex flex-col space-y-2">
-              <h3 className="font-semibold text-yellow-400">Navigacija</h3>
-              <a
-                href="#informacije"
-                className="hover:text-yellow-500 transition"
-              >
+              <h3 className="font-semibold text-red-400">Navigacija</h3>
+              <a href="#informacije" className="hover:text-red-500 transition">
                 Informacije
               </a>
-              <a href="#karijera" className="hover:text-yellow-500 transition">
+              <a href="#karijera" className="hover:text-red-500 transition">
                 Karijera
               </a>
-              <a href="#recenzije" className="hover:text-yellow-500 transition">
+              <a href="#recenzije" className="hover:text-red-500 transition">
                 Recenzije
               </a>
-              <a href="#pridruzi" className="hover:text-yellow-500 transition">
+              <a href="#pridruzi" className="hover:text-red-500 transition">
                 Pridruži se
               </a>
             </div>
 
             <div className="flex flex-col space-y-2">
-              <h3 className="font-semibold text-yellow-400">Društvene mreže</h3>
+              <h3 className="font-semibold text-red-400">Društvene mreže</h3>
               <a
                 href="https://www.instagram.com/lagana.lova?igsh=MXduMjdqZmNxb3U3aw%3D%3D&utm_source=qr"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-yellow-500 transition"
+                className="hover:text-red-500 transition"
               >
                 Instagram
               </a>
@@ -632,13 +648,13 @@ export default function Home() {
                 href="https://www.tiktok.com/@lagana.lova?_t=ZM-8zO1scbJtLR&_r=1"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-yellow-500 transition"
+                className="hover:text-red-500 transition"
               >
                 TikTok
               </a>
               <a
                 href="mailto:jovanovicnikola137@gmail.com"
-                className="hover:text-yellow-500 transition"
+                className="hover:text-red-500 transition"
               >
                 Email
               </a>
@@ -646,7 +662,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="border-t border-gray-700 mt-6 pt-6 text-center text-gray-500 text-sm">
+        <div className="border-t border-gray-700 pt-6 pb-5 text-center text-gray-500 text-sm">
           © {new Date().getFullYear()} Lagana Lova. Sva prava zadržana.
         </div>
       </div>
